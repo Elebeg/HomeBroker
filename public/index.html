@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="styles.css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@4.0.1/dist/chartjs-chart-financial.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@latest"></script>
     </head>    
     <body>
         <div class="container-fluid">
@@ -98,16 +98,29 @@
                     <h3>Total Gasto: <span id="total-gasto">R$ 0,00</span></h3>
                 </div>    
         </div>
-        
-        <script src="script.js">
 
-            Chart.register(
-                ChartjsChartFinancial.OhlcElement,
-                ChartjsChartFinancial.OhlcController,
-                ChartjsChartFinancial.CandlestickElement,
-                ChartjsChartFinancial.CandlestickController
-            );
-            
-        </script>
+        <div class="container">
+            <!-- Seção de histórico -->
+            <div id="transaction-history-container" style="display: none;">
+                <h3>Histórico de Transações</h3>
+                <table id="transaction-history-table" class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Tipo</th>
+                            <th>Data</th>
+                            <th>Ação</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-history-body">
+                        <!-- Linhas do histórico serão adicionadas aqui -->
+                    </tbody>
+                </table>
+            </div>
+            <button id="toggle-history-btn">Mostrar Histórico de Transações</button>
+        </div>        
+        
+        <script src="script.js"></script>
     </body>
     

@@ -13,7 +13,7 @@ app.use('/api', createProxyMiddleware({
     target: 'https://api.hgbrasil.com',
     changeOrigin: true,
     pathRewrite: {
-        '^/api': '', // remove /api prefix when forwarding request
+        '^/api': '', //remove o prefixo '/api' quando for fazer a requisição
     },
 }));
 

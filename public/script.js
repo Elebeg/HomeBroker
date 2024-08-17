@@ -50,27 +50,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const stockData = await fetchStockData(symbol);
         
         if (!stockData) return;
-
+    
         const chartData = {
-            labels: [new Date(stockData.updated_at)],
             datasets: [{
-                label: 'Preço da Ação',
-                data: [stockData.price],
-                backgroundColor: (ctx) => {
-                    const data = ctx.dataset.data;
-                    const index = ctx.dataIndex;
-                    if (index === 0) return 'gray'; // Cor padrão para o primeiro ponto
-
-                    const previousPrice = data[index - 1];
-                    return data[index] > previousPrice ? 'green' : 'red';
-                },
-                borderColor: 'black',
-                borderWidth: 1,
+                label: 'Preço',
+                data: [{
+                    x: new Date(stockData.updated_at),
+                    o: stockData.openPrice,
+                    h: stockData.highPrice,
+                    l: stockData.lowPrice,
+                    c: stockData.price
+                }],
+                borderColor: 'rgb(75, 192, 192)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)'
             }]
         };
-
-        const chartInstance = new Chart(chartElement, {
-            type: 'bar',
+    
+        new Chart(chartElement, {
+            type: 'candlestick', 
             data: chartData,
             options: {
                 responsive: true,
@@ -100,9 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
-
-        // Salva a instância do gráfico para atualizações futuras
-        chartElement.chartInstance = chartInstance;
     };
 
     const updateStock = async (symbol) => {
@@ -240,6 +234,33 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+// Compra e venda de ações e histórico ---------------------------------------------------------
+
+const toggleHistoryBtn = document.getElementById('toggle-history-btn');
+    const transactionHistoryContainer = document.getElementById('transaction-history-container');
+
+    toggleHistoryBtn.addEventListener('click', () => {
+        const isHidden = transactionHistoryContainer.style.display === 'none';
+        transactionHistoryContainer.style.display = isHidden ? 'block' : 'none';
+        toggleHistoryBtn.textContent = isHidden ? 'Esconder Histórico de Transações' : 'Mostrar Histórico de Transações';
+    });
+
+    const addTransactionToHistory = (type, symbol, quantity, price) => {
+        const transactionHistoryBody = document.getElementById('transaction-history-body');
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${type}</td>
+            <td>${new Date().toLocaleString()}</td>
+            <td>${symbol}</td>
+            <td>${quantity}</td>
+            <td>${price.toFixed(2).replace('.', ',')}</td>
+        `;
+
+        transactionHistoryBody.appendChild(row);
+    };
+
+
     const buyStock = (symbol, quantity, currentPrice) => {
         if (!portfolio[symbol]) {
             portfolio[symbol] = {
@@ -247,12 +268,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 averagePrice: 0,
                 currentPrice: currentPrice
             };
-        }
+    }
 
         const stock = portfolio[symbol];
         stock.averagePrice = (stock.averagePrice * stock.quantity + currentPrice * quantity) / (stock.quantity + quantity);
         stock.quantity += quantity;
         stock.currentPrice = currentPrice;
+
+        //adiciona a compra no histórico de transação
+        addTransactionToHistory('Compra', symbol, quantity, currentPrice);
 
         updatePortfolioTable();
     };
@@ -270,6 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (stock.quantity === 0) {
             delete portfolio[symbol];
         }
+
+        //adiciona a venda no histórico de transação
+        addTransactionToHistory('Venda', symbol, quantity, currentPrice);
 
         updatePortfolioTable();
     };

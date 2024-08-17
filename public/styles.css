@@ -126,6 +126,24 @@ canvas {
     color: #f2cf56; /* Cor do texto */
 }
 
+#transaction-history-container {
+    margin-top: 20px;
+}
+
+#toggle-history-btn {
+    background-color: #f2cf56;
+    color: #0d1414;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+
+#toggle-history-btn:hover {
+    background-color: #e6be46;
+}
+
 @media (max-width: 768px) {
     .stock {
         max-width: 100%;
