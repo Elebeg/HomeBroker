@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home Broker - Ibovespa</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@4.0.1/dist/chartjs-chart-financial.min.js"></script>
+    </head>    
+    <body>
+        <div class="container-fluid">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <img src="./img/logo.jpg" alt="Logo" class="logo">
+                <h1 class="text-center flex-grow-1">Eureka Trade - HomeBroker</h1>
+            </div>
+    
+            <div class="container mt-4">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label for="stock-select">Escolha uma ação:</label>
+                        <select id="stock-select" class="form-control">
+                            <option value="PETR4">Petrobras PN (PETR4)</option>
+                            <option value="VALE3">Vale ON (VALE3)</option>
+                            <option value="ITUB4">Itaú Unibanco PN (ITUB4)</option>
+                            <option value="B3SA3">B3 ON (B3SA3)</option>
+                            <option value="BBAS3">Banco do Brasil ON (BBAS3)</option>
+                            <option value="ABEV3">Ambev ON (ABEV3)</option>
+                            <option value="MGLU3">Magazine Luiza ON (MGLU3)</option>
+                            <option value="WEGE3">WEG ON (WEGE3)</option>
+                            <option value="RENT3">Localiza ON (RENT3)</option>
+                            <option value="ITSA4">Itaúsa PN (ITSA4)</option>
+                            <!-- Adicionar mais ações -->
+                        </select>
+                        <input type="hidden">
+                    </div>
+                    <div class="col-md-6 d-flex align-items-center">
+                        <button id="add-stock-btn" class="btn btn-primary ml-3">Adicionar Ação</button>
+                    </div>
+                </div>
+    
+                <div id="stocks-container" class="row">
+                    <!-- Ações serão adicionadas aqui conforme usuário -->
+                </div>
+            </div>
+            <div class="container mt-5">
+                <h2>Compra e Venda</h2>
+                <div id="portfolio-container">
+                    <table class="table table-dark table-striped">
+                        <thead>
+                            <tr>
+                                <th>Ação</th>
+                                <th>Quantidade</th>
+                                <th>Preço Médio</th>
+                                <th>Valor Atual</th>
+                                <th>Total Gasto (R$)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="portfolio-body">
+                            <!-- Ações do portfólio serão adicionadas aqui -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="portfolio-stock-select">Escolha uma ação para comprar/vender:</label>
+                        <select id="portfolio-stock-select" class="form-control">
+                            <option value="PETR4">Petrobras PN (PETR4)</option>
+                            <option value="VALE3">Vale ON (VALE3)</option>
+                            <option value="ITUB4">Itaú Unibanco PN (ITUB4)</option>
+                            <option value="B3SA3">B3 ON (B3SA3)</option>
+                            <option value="BBAS3">Banco do Brasil ON (BBAS3)</option>
+                            <option value="ABEV3">Ambev ON (ABEV3)</option>
+                            <option value="MGLU3">Magazine Luiza ON (MGLU3)</option>
+                            <option value="WEGE3">WEG ON (WEGE3)</option>
+                            <option value="RENT3">Localiza ON (RENT3)</option>
+                            <option value="ITSA4">Itaúsa PN (ITSA4)</option>
+                            <!-- Adicione mais ações aqui -->
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="quantity-input">Quantidade:</label>
+                        <input type="number" id="quantity-input" class="form-control" placeholder="Digite a quantidade">
+                        <button id="buy-stock-btn" class="btn btn-success mt-3">Comprar</button>
+                        <button id="sell-stock-btn" class="btn btn-danger mt-3">Vender</button>
+                    </div>
+                </div>
+            </div>
+
+                 <!-- Canvas para o gráfico circular -->
+                 <div id="chart-container">
+                    <canvas id="portfolio-pie-chart"></canvas>
+                </div>            
+                <div id="total-gasto-container">
+                    <h3>Total Gasto: <span id="total-gasto">R$ 0,00</span></h3>
+                </div>    
+        </div>
+        
+        <script src="script.js">
+
+            Chart.register(
+                ChartjsChartFinancial.OhlcElement,
+                ChartjsChartFinancial.OhlcController,
+                ChartjsChartFinancial.CandlestickElement,
+                ChartjsChartFinancial.CandlestickController
+            );
+            
+        </script>
+    </body>
+    
