@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         stockElement.querySelector('.delete-btn').addEventListener('click', () => {
             removeStock(stockData.symbol);
         });
-    
+
         // Atualiza os dados da ação a cada 30 segundos
         setInterval(() => updateStock(stockData.symbol), 30000);
     };
@@ -164,6 +164,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert('Código de ação inválido ou não encontrado.');
             }
         }
+
+        // Adicione a nova ação à grade de cotações
+        updateQuotesGrid();
     });
 
     // Remove uma ação do portfólio
@@ -173,6 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
             stocksContainer.removeChild(stockElement);
             selectedStocks = selectedStocks.filter(stock => stock !== symbol);
         }
+
+        // Remove a ação à grade de cotações
+        updateQuotesGrid();
     };
 
     // Atualiza a tabela do portfólio e o gráfico de pizza
@@ -425,4 +431,101 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessage('Código de ação inválido ou não encontrado.', 'error');
         }
     });
+
+
+    //Gride de Cotações
+    const updateQuotesGrid = async () => {
+        const quotesContainer = document.getElementById('quotes-container');
+        quotesContainer.innerHTML = '';
+    
+        if (selectedStocks.length === 0) {
+            // Exibe a mensagem se não houver ações selecionadas
+            const messageElement = document.createElement('p');
+            messageElement.textContent = 'Nenhuma ação selecionada.';
+            messageElement.style.color = '#f2cf56';  // Cor da mensagem (utilize sua paleta)
+            messageElement.style.fontSize = '1.2em';
+            messageElement.style.textAlign = 'center';
+            quotesContainer.appendChild(messageElement);
+        } else {
+            // Se houver ações selecionadas, exibe as cotações
+            for (const symbol of selectedStocks) {
+                const stockData = await fetchStockData(symbol);
+    
+                if (stockData) {
+                    const quoteElement = document.createElement('div');
+                    quoteElement.classList.add('quote');
+                    
+                    const priceClass = stockData.price > stockData.openPrice ? 'price-up' : 'price-down';
+    
+                    quoteElement.innerHTML = `
+                        <div class="quote-symbol">${stockData.symbol}</div>
+                        <div class="quote-price ${priceClass}">${stockData.price.toFixed(2)}</div>
+                    `;
+                    
+                    quotesContainer.appendChild(quoteElement);
+                }
+            }
+        }
+    };
+
+    // Função para buscar dados de cotações de moedas
+    const fetchCurrencyData = async () => {
+        const url = `/api/finance?key=${API_KEY}`;
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.results.currencies; // Assume que a resposta contém as moedas em 'results.currencies'
+        } catch (error) {
+            console.error('Error fetching currency data:', error);
+            return null;
+        }
+    };  
+
+    // Função para exibir cotações de moedas na interface
+    const displayCurrencyData = (currencies) => {
+        const coinsList = document.getElementById('coins-list');
+        coinsList.innerHTML = '';
+
+        if (!currencies) {
+            const errorMessage = document.createElement('p');
+            errorMessage.textContent = 'Não foi possível carregar as cotações de moedas.';
+            coinsList.appendChild(errorMessage);
+            return;
+        }
+
+        const currencySymbols = {
+            'USD': 'Dólar Americano',
+            'EUR': 'Euro',
+            'BTC': 'Bitcoin',
+            'BRL': 'Real Brasileiro'
+        };
+
+        for (const [symbol, currency] of Object.entries(currencies)) {
+            if (currencySymbols[symbol]) {
+                const currencyElement = document.createElement('div');
+                currencyElement.classList.add('currency');
+                currencyElement.innerHTML = `
+                    <h3>${currencySymbols[symbol]} (${symbol})</h3>
+                    <p>Compra: ${currency.buy.toFixed(2).replace('.', ',')}</p>
+                    <p>Variação: ${currency.variation.toFixed(2).replace('.', ',')}%</p>
+                `;
+                coinsList.appendChild(currencyElement);
+            }
+        }
+    };
+
+        // Atualiza os dados das moedas a cada 30 segundos
+        const updateCurrencyData = async () => {
+            const currencies = await fetchCurrencyData();
+            displayCurrencyData(currencies);
+        };
+    
+        
+    // Chama a função uma vez ao carregar a página e depois a cada 30 segundos
+    updateCurrencyData();
+    setInterval(updateCurrencyData, 30000);
+
+    // Chama a função
+    updateQuotesGrid();
+    setInterval(updateQuotesGrid, 10000);
 });

@@ -12,21 +12,25 @@ body {
 
 .transaction-history-table{
     color: #f2cf56;
+    z-index: 500; /* Garante que a transaction-history-table fique acima do conteúdo */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra para destaque */
 }
 
 .transaction-history-body{
     color: white;
+    z-index: 300; /* Garante que a transaction-history-body fique acima do conteúdo */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra para destaque */
 }
 
 .table-portfolio{
     background-color: #0d1414;
-    z-index: 500; /* Garante que a portfolo-body fique acima do conteúdo */
+    z-index: 500; /* Garante que a table-portfolio fique acima do conteúdo */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra para destaque */
 }
 
 .portfolio-body{
     background-color: #0d1414;
-    z-index: 300; /* Garante que a portfolo-body fique acima do conteúdo */
+    z-index: 300; /* Garante que a portfolio-body fique acima do conteúdo */
     box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3); /* Adiciona uma sombra para destaque */
 }
 
@@ -252,6 +256,49 @@ canvas {
     max-width: 600px;
     z-index: 1000;
     font-size: 1rem;
+}
+
+h3{
+    text-align: center;
+}
+
+.quote {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.quote.symbol {
+    font-weight: bold;
+}
+
+.quote.price-up {
+    color: green;
+}
+
+.quote.price-down {
+    color: red;
+}
+
+.currency {
+    background-color: #0d1414;
+    border: 1px solid #f2cf56;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.currency h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #ffffff;
+}
+
+.currency p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #ffffff;
 }
 
 @media (max-width: 768px) {
