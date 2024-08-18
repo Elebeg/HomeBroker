@@ -9,46 +9,77 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@latest"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Adiciona os ícones do Font Awesome -->
     </head>    
     <body>
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center py-3">
-                <img src="./img/logo.jpg" alt="Logo" class="logo">
-                <h1 class="text-center flex-grow-1">Eureka Trade - HomeBroker</h1>
-            </div>
+        <div id="message-container"></div>
+
+
+<!-------------------------------------------SIDEBAR----------------------------------------------------->
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center py-3">
+        <div id="sidebar" class="sidebar">
+            <img src="./img/logo.jpg" alt="Logo" class="logo">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-target="charts">
+                        <i class="fas fa-chart-pie"></i> Gráficos
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-target="trading">
+                        <i class="fas fa-hand-holding-usd"></i> Compra e Venda
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-target="history">
+                        <i class="fas fa-history"></i> Histórico
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
     
-            <div class="container mt-4">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <label for="stock-select">Escolha uma ação:</label>
-                        <select id="stock-select" class="form-control">
-                            <option value="PETR4">Petrobras PN (PETR4)</option>
-                            <option value="VALE3">Vale ON (VALE3)</option>
-                            <option value="ITUB4">Itaú Unibanco PN (ITUB4)</option>
-                            <option value="B3SA3">B3 ON (B3SA3)</option>
-                            <option value="BBAS3">Banco do Brasil ON (BBAS3)</option>
-                            <option value="ABEV3">Ambev ON (ABEV3)</option>
-                            <option value="MGLU3">Magazine Luiza ON (MGLU3)</option>
-                            <option value="WEGE3">WEG ON (WEGE3)</option>
-                            <option value="RENT3">Localiza ON (RENT3)</option>
-                            <option value="ITSA4">Itaúsa PN (ITSA4)</option>
-                            <!-- Adicionar mais ações -->
-                        </select>
-                        <input type="hidden">
+<!--------------------------------------EXIBIÇÃO DE GRÁFICOS--------------------------------------------->
+    <div id="main-content" class="main-content">
+            <div id="charts" class="content-card active">
+                <div class="container mt-4">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="stock-select">Escolha uma ação:</label>
+                            <select id="stock-select" class="form-control">
+                                <option value="PETR4">Petrobras PN (PETR4)</option>
+                                <option value="VALE3">Vale ON (VALE3)</option>
+                                <option value="ITUB4">Itaú Unibanco PN (ITUB4)</option>
+                                <option value="B3SA3">B3 ON (B3SA3)</option>
+                                <option value="BBAS3">Banco do Brasil ON (BBAS3)</option>
+                                <option value="ABEV3">Ambev ON (ABEV3)</option>
+                                <option value="MGLU3">Magazine Luiza ON (MGLU3)</option>
+                                <option value="WEGE3">WEG ON (WEGE3)</option>
+                                <option value="RENT3">Localiza ON (RENT3)</option>
+                                <option value="ITSA4">Itaúsa PN (ITSA4)</option>
+                                <!-- Adicionar mais ações -->
+                            </select>
+                            <input type="hidden">
+                        </div>
+                        <div class="col-md-6 d-flex align-items-center">
+                            <button id="add-stock-btn" class="btn btn-primary btn-add-stock">Adicionar Ação</button>
+                        </div>
                     </div>
-                    <div class="col-md-6 d-flex align-items-center">
-                        <button id="add-stock-btn" class="btn btn-primary ml-3">Adicionar Ação</button>
+    
+                    <div id="stocks-container" class="row">
+                        <!-- Ações serão adicionadas aqui conforme usuário -->
                     </div>
                 </div>
-    
-                <div id="stocks-container" class="row">
-                    <!-- Ações serão adicionadas aqui conforme usuário -->
-                </div>
             </div>
+
+
+<!-------------------------------------------COMPRAS E VENDAS----------------------------------------------> 
+        <div id="trading" class="content-card">
             <div class="container mt-5">
                 <h2>Compra e Venda</h2>
                 <div id="portfolio-container">
-                    <table class="table table-dark table-striped">
+                    <table class="table table-dark table-striped table-portfolio">
                         <thead>
                             <tr>
                                 <th>Ação</th>
@@ -58,7 +89,7 @@
                                 <th>Total Gasto (R$)</th>
                             </tr>
                         </thead>
-                        <tbody id="portfolio-body">
+                        <tbody id="portfolio-body" class="portfolio-body">
                             <!-- Ações do portfólio serão adicionadas aqui -->
                         </tbody>
                     </table>
@@ -97,30 +128,44 @@
                 <div id="total-gasto-container">
                     <h3>Total Gasto: <span id="total-gasto">R$ 0,00</span></h3>
                 </div>    
+            </div>
+
+
+<!-------------------------------------HISTÓRICO DE COMPRAS E VENDAS------------------------------------->
+        <div id="history" class="content-card">
+            <div class="container">
+                <div id="transaction-history-container" style="display: none;">
+                    <h3>Histórico de Transações</h3>
+                        <div id="no-transactions-message" style="display: none;">
+                            <p>Você ainda não fez nenhuma transação.</p>
+                        </div>
+                    <table id="transaction-history-table" class="table table-striped transaction-history-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Data</th>
+                                <th>Ação</th>
+                                <th>Quantidade</th>
+                                <th>Preço</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transaction-history-body" class="transaction-history-body">
+                            <!-- Linhas do histórico serão adicionadas aqui -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>   
         </div>
 
-        <div class="container">
-            <!-- Seção de histórico -->
-            <div id="transaction-history-container" style="display: none;">
-                <h3>Histórico de Transações</h3>
-                <table id="transaction-history-table" class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Tipo</th>
-                            <th>Data</th>
-                            <th>Ação</th>
-                            <th>Quantidade</th>
-                            <th>Preço</th>
-                        </tr>
-                    </thead>
-                    <tbody id="transaction-history-body">
-                        <!-- Linhas do histórico serão adicionadas aqui -->
-                    </tbody>
-                </table>
-            </div>
-            <button id="toggle-history-btn">Mostrar Histórico de Transações</button>
-        </div>        
-        
-        <script src="script.js"></script>
-    </body>
+
+<!------------------------------------------GRADE DE COTAÇÕES-------------------------------------------->
+            <!--EM BREVE-->
+    </div> 
+</div>    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>    
+    <script src="script.js"></script>
+</body>
     
