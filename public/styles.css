@@ -262,6 +262,10 @@ h3{
     text-align: center;
 }
 
+h2{
+    text-align: center;
+}
+
 .quote {
     display: flex;
     justify-content: space-between;
@@ -296,6 +300,47 @@ h3{
 }
 
 .currency p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #ffffff;
+}
+
+.index {
+    background-color: #0d1414;
+    border: 1px solid #f2cf56;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.index h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #ffffff;
+}
+
+.index p {
+    margin: 5px 0;
+    font-size: 1em;
+    color: #ffffff;
+}
+
+.rate {
+    background-color: #0d1414;
+    border: 1px solid #0d1414;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.rate h3 {
+    margin: 10px;
+    font-size: 30px;
+    color: #f2cf56;
+}
+
+.rate p {
+    border: 1px solid #f2cf56;;
     margin: 5px 0;
     font-size: 1em;
     color: #ffffff;

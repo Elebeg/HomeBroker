@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let portfolio = {};       // Objeto para armazenar o portfólio do usuário
     let pieChart;             // Variável para o gráfico de pizza
 
+
+//----------------------------------------------SIDEBAR-------------------------------------------------\\
     // Configura os botões da barra lateral para alternar entre seções
     sidebarButtons.forEach(button => {
         button.addEventListener('click', () => {
@@ -26,6 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+
+//-------------------------------------------GRÁFICO DE AÇÕES-------------------------------------------\\
     // Função para buscar dados de uma ação
     const fetchStockData = async (symbol) => {
         const url = `/api/finance/stock_price?key=${API_KEY}&symbol=${symbol}`;
@@ -152,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+//----------------------------------------------PORTFÓLIO-----------------------------------------------\\
     // Adiciona uma nova ação ao portfólio quando o botão é clicado
     addStockBtn.addEventListener('click', async () => {
         const symbol = stockSelect.value.toUpperCase().trim();
@@ -272,6 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+
+//-------------------------------------------HISTÓRICO DE TRANSAÇÕES------------------------------------\\
     // Adiciona uma transação ao histórico de transações
     const addTransactionToHistory = (type, symbol, quantity, price) => {
         const transactionHistoryBody = document.getElementById('transaction-history-body');
@@ -329,6 +337,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Chama a função para verificar o histórico vazio no início ou após alguma ação
     checkEmptyHistory();
 
+
+//--------------------------------------------COMPRA E VENDA 1------------------------------------------\\    
     // Função para comprar ações
     const buyStock = (symbol, quantity, currentPrice) => {
         if (!portfolio[symbol]) {
@@ -373,6 +383,8 @@ document.addEventListener('DOMContentLoaded', () => {
         updatePortfolioTable();
     };
 
+
+//------------------------------------------------MENSAGEM---------------------------------------------\\
     // Função para exibir mensagens
     const showMessage = (message, type) => {
         if (messageContainer) {
@@ -392,6 +404,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+//--------------------------------------------COMPRA E VENDA 2------------------------------------------\\
     // Configura o evento de clique para o botão de compra
     document.getElementById('buy-stock-btn').addEventListener('click', async () => {
         const symbol = document.getElementById('portfolio-stock-select').value;
@@ -433,7 +447,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    //Gride de Cotações
+//-------------------------------------------GRIDE DE COTAÇÕES------------------------------------------\\
     const updateQuotesGrid = async () => {
         const quotesContainer = document.getElementById('quotes-container');
         quotesContainer.innerHTML = '';
@@ -468,18 +482,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+
+//------------------------------------------------MOEDAS-----------------------------------------------\\
     // Função para buscar dados de cotações de moedas
     const fetchCurrencyData = async () => {
         const url = `/api/finance?key=${API_KEY}`;
         try {
             const response = await fetch(url);
             const data = await response.json();
-            return data.results.currencies; // Assume que a resposta contém as moedas em 'results.currencies'
+            console.log(data); 
+            return data.results.currencies; 
         } catch (error) {
             console.error('Error fetching currency data:', error);
             return null;
         }
-    };  
+    };    
+    
 
     // Função para exibir cotações de moedas na interface
     const displayCurrencyData = (currencies) => {
@@ -496,8 +514,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const currencySymbols = {
             'USD': 'Dólar Americano',
             'EUR': 'Euro',
-            'BTC': 'Bitcoin',
-            'BRL': 'Real Brasileiro'
+            'GBP': 'Libra Esterlina',
+            'ARS': 'Peso Argentino',
+            'CAD': 'Dólar Canadense',
+            'AUD': 'Dólar Australiano',
+            'JPY': 'Iene Japonês',
+            'CNY': 'Yuan Chinês',
+            'BTC': 'Bitcoin'
         };
 
         for (const [symbol, currency] of Object.entries(currencies)) {
@@ -506,20 +529,134 @@ document.addEventListener('DOMContentLoaded', () => {
                 currencyElement.classList.add('currency');
                 currencyElement.innerHTML = `
                     <h3>${currencySymbols[symbol]} (${symbol})</h3>
-                    <p>Compra: ${currency.buy.toFixed(2).replace('.', ',')}</p>
-                    <p>Variação: ${currency.variation.toFixed(2).replace('.', ',')}%</p>
+                    <p>Preço: ${currency.buy.toFixed(2).replace('.', ',')}</p>
+                    <p>Variação Diária: ${currency.variation.toFixed(2).replace('.', ',')}%</p>
                 `;
                 coinsList.appendChild(currencyElement);
+            } else {
+                console.log(`Moeda não encontrada: ${symbol}`);
+            }
+        }
+    }
+     
+    
+//-----------------------------------------------ÍNDICES-----------------------------------------------\\
+    const fetchIndexData = async () => {
+    const url = `/api/finance?key=${API_KEY}`;
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        return data.results.stocks; 
+        } catch (error) {
+        console.error('Erro ao buscar dados dos índices:', error);
+        return null;
+        }
+    };
+
+    const displayIndexData = (indices) => {
+    const indicesList = document.getElementById('indices-list');
+    indicesList.innerHTML = '';
+
+    if (!indices) {
+        const errorMessage = document.createElement('p');
+        errorMessage.textContent = 'Não foi possível carregar os índices.';
+        indicesList.appendChild(errorMessage);
+        return;
+    }
+
+    const indexSymbols = {
+        'IBOVESPA': 'BM&F BOVESPA (Brazil)',
+        'NASDAQ': 'NASDAQ Stock Market (EUA)',
+        'DOWJONES': 'Dow Jones Industrial Average (EUA)',
+        'IFIX': 'Índice de Fundos de Investimentos Imobiliários B3 (Brazil)',
+        'CAC': 'CAC 40 (France)',
+        'NIKKEI': 'Nikkei 225 (Japan)',
+    };
+
+    for (const [symbol, data] of Object.entries(indices)) {
+        if (indexSymbols[symbol]) {
+            const indexElement = document.createElement('div');
+            indexElement.classList.add('index');
+            indexElement.innerHTML = `
+                <h3>${indexSymbols[symbol]}</h3>
+                <p>Pontos: ${data.points !== undefined ? data.points.toFixed(2).replace('.', ',') : 'N/A'}</p>
+                <p>Variação diária: ${data.variation !== undefined ? data.variation.toFixed(2).replace('.', ',') : 'N/A'}%</p>
+            `;
+            indicesList.appendChild(indexElement);
+            } else {
+              console.log(`Índice não encontrado: ${symbol}`);
             }
         }
     };
 
-        // Atualiza os dados das moedas a cada 30 segundos
-        const updateCurrencyData = async () => {
-            const currencies = await fetchCurrencyData();
-            displayCurrencyData(currencies);
+
+//-------------------------------------------------TAXAS------------------------------------------------\\
+    const fetchRateData = async () => {
+        const url = `/api/finance?key=${API_KEY}`;
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+            return data.results.taxes; 
+            } catch (error) {
+            console.error('Erro ao buscar dados das taxas:', error);
+            return null;
+            }
         };
-    
+
+        const displayRateData = (taxas) => {
+            const taxasList = document.getElementById('taxas-list');
+            taxasList.innerHTML = '';
+
+            if (!taxas) {
+                const errorMessage = document.createElement('p');
+                errorMessage.textContent = 'Não foi possível carregar as taxas.';
+                taxasList.appendChild(errorMessage);
+                return;
+            }
+
+            const rateSymbols = {
+                '0': 'Taxas',
+            };
+
+            for (const [symbol, data] of Object.entries(taxas)) {
+                if (rateSymbols[symbol]) {
+                    const rateElement = document.createElement('div');
+                    rateElement.classList.add('rate');
+                    rateElement.innerHTML = `
+                        <h3>${rateSymbols[symbol]}</h3>
+                        <p>CDI: ${data.cdi !== undefined ? data.cdi.toFixed(2) : 'N/A'}%</p>
+                        <p>SELIC: ${data.selic !== undefined ? data.selic.toFixed(2) : 'N/A'}%</p>
+                    `;
+                    taxasList.appendChild(rateElement);
+                    } else {
+                      console.log(`taxa não encontrada: ${symbol}`);
+                    }
+                }
+            };
+
+//------------------------------------------------CALLBACK---------------------------------------------\\
+    const updateRateData = async () => {   
+        const taxas = await fetchRateData();
+        displayRateData(taxas);
+    };
+
+    // Chama a função uma vez ao carregar a página e depois a cada 30 segundos
+    updateRateData();
+    setInterval(updateRateData, 30000);
+
+    const updateIndexData = async () => {   
+        const indices = await fetchIndexData();
+        displayIndexData(indices);
+    };
+
+    // Chama a função uma vez ao carregar a página e depois a cada 30 segundos
+    updateIndexData();
+    setInterval(updateIndexData, 30000);
+
+    const updateCurrencyData = async () => {
+        const currencies = await fetchCurrencyData();
+        displayCurrencyData(currencies);
+    };
         
     // Chama a função uma vez ao carregar a página e depois a cada 30 segundos
     updateCurrencyData();
@@ -527,5 +664,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Chama a função
     updateQuotesGrid();
-    setInterval(updateQuotesGrid, 10000);
 });
