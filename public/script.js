@@ -70,87 +70,106 @@ document.addEventListener('DOMContentLoaded', () => {
         setInterval(() => updateStock(stockData.symbol), 30000);
     };
 
-    // Função para inicializar o gráfico de velas
+    // Função para inicializar o gráfico
     const initializeChart = async (symbol) => {
         const chartElement = document.getElementById(`chart-${symbol}`);
         const stockData = await fetchStockData(symbol);
-        
+
         if (!stockData) return;
-    
-        const chartData = {
-            datasets: [{
-                label: 'Preço',
-                data: [{
-                    x: new Date(stockData.updated_at),
-                    o: stockData.openPrice,
-                    h: stockData.highPrice,
-                    l: stockData.lowPrice,
-                    c: stockData.price
-                }],
-                borderColor: 'rgb(242, 207, 86)',
-                backgroundColor: 'rgba(242, 207, 86, 0.2)'
-            }]
-        };
-    
-        new Chart(chartElement, {
-            type: 'candlestick', 
-            data: chartData,
-            options: {
-                responsive: true,
-                scales: {
-                    x: {
-                        type: 'time',
-                        time: {
-                            unit: 'minute',
-                            tooltipFormat: 'll HH:mm'
-                        },
-                        title: {
-                            display: true,
-                            text: 'Tempo'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Preço'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true
-                    }
-                }
-            }
-        });
+
+    const chartData = {
+        datasets: [{
+            label: 'Preço',
+            data: [{
+                x: new Date(stockData.updated_at),  // Tempo no eixo X
+                y: stockData.price  // Preço no eixo Y
+            }],
+            borderColor: 'rgb(242, 207, 86)',
+            backgroundColor: 'rgba(242, 207, 86, 0.2)',
+            fill: false,
+            tension: 0.1
+        }]
     };
 
-    // Função para atualizar o preço da ação e o gráfico
-    const updateStock = async (symbol) => {
+    const chartInstance = new Chart(chartElement, {
+        type: 'line',
+        data: chartData,
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'second',
+                        tooltipFormat: 'll HH:mm:ss',
+                        displayFormats: {
+                            second: 'HH:mm:ss'
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tempo'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Preço'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true
+                }
+            }
+        }
+    });
+
+        // Armazenar a instância do gráfico no elemento para facilitar atualizações
+        chartElement.chartInstance = chartInstance;
+
+        // Atualizar o gráfico a cada 10 segundos
+        setInterval(async () => {
+            await updateStock(symbol, true);
+        }, 10000);  // 10 segundos
+    };
+
+    // Função para atualizar o gráfico com novos dados
+    const updateStock = async (symbol, periodicUpdate = false) => {
         const stockData = await fetchStockData(symbol);
         if (stockData) {
             const stockElement = document.getElementById(`stock-${symbol}`);
             const priceElement = stockElement.querySelector('.stock-price');
             const previousPrice = parseFloat(priceElement.textContent);
             const currentPrice = parseFloat(stockData.price);
-            
-            priceElement.textContent = currentPrice.toFixed(2);
 
-            // Atualiza a cor do preço com base na variação
-            if (currentPrice > previousPrice) {
-                priceElement.classList.remove('price-down');
-                priceElement.classList.add('price-up');
-            } else if (currentPrice < previousPrice) {
-                priceElement.classList.remove('price-up');
-                priceElement.classList.add('price-down');
-            }
+        // Atualiza o preço exibido
+        priceElement.textContent = currentPrice.toFixed(2);
 
-            // Atualiza o gráfico com os novos dados
-            const chartElement = document.getElementById(`chart-${symbol}`);
-            const chartInstance = chartElement.chartInstance;
-            if (chartInstance) {
-                chartInstance.data.labels.push(new Date());
-                chartInstance.data.datasets[0].data.push(currentPrice);
+        // Atualiza a cor do preço com base na variação
+        if (currentPrice > previousPrice) {
+            priceElement.classList.remove('price-down');
+            priceElement.classList.add('price-up');
+        } else if (currentPrice < previousPrice) {
+            priceElement.classList.remove('price-up');
+            priceElement.classList.add('price-down');
+        }
+
+        // Atualiza o gráfico com os novos dados
+        const chartElement = document.getElementById(`chart-${symbol}`);
+        const chartInstance = chartElement.chartInstance;
+        if (chartInstance) {
+            chartInstance.data.datasets[0].data.push({
+                x: new Date(),  // Atualiza o tempo no eixo X
+                y: currentPrice  // Mantém o preço atual no eixo Y
+            });
+
+                // Remove dados antigos para evitar excesso de pontos no gráfico
+                if (chartInstance.data.datasets[0].data.length > 100) {
+                    chartInstance.data.datasets[0].data.shift();
+                }
+
                 chartInstance.update();
             }
         }
@@ -447,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-//-------------------------------------------GRIDE DE COTAÇÕES------------------------------------------\\
+//-------------------------------------------GRADE DE COTAÇÕES------------------------------------------\\
     const updateQuotesGrid = async () => {
         const quotesContainer = document.getElementById('quotes-container');
         quotesContainer.innerHTML = '';
@@ -473,7 +492,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
                     quoteElement.innerHTML = `
                         <div class="quote-symbol">${stockData.symbol}</div>
-                        <div class="quote-price ${priceClass}">${stockData.price.toFixed(2)}</div>
+                        <div class="quote-price">${stockData.price.toFixed(2)}</div>
                     `;
                     
                     quotesContainer.appendChild(quoteElement);
@@ -662,6 +681,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateCurrencyData();
     setInterval(updateCurrencyData, 30000);
 
-    // Chama a função
+    // Chama a função uma vez ao carregar a página e depois a cada 30 segundos
     updateQuotesGrid();
+    setInterval(updateQuotesGrid, 30000);
+
 });
