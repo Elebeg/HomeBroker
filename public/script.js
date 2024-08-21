@@ -474,8 +474,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedStocks.length === 0) {
             // Exibe a mensagem se não houver ações selecionadas
             const messageElement = document.createElement('p');
-            messageElement.textContent = 'Nenhuma ação selecionada.';
-            messageElement.style.color = '#f2cf56';  // Cor da mensagem (utilize sua paleta)
+            messageElement.textContent = 'Nenhuma ação selecionada na aba Gráficos.';
+            messageElement.style.color = '#f2cf56';  //Cor da mensagem
             messageElement.style.fontSize = '1.2em';
             messageElement.style.textAlign = 'center';
             quotesContainer.appendChild(messageElement);
@@ -487,8 +487,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (stockData) {
                     const quoteElement = document.createElement('div');
                     quoteElement.classList.add('quote');
-                    
-                    const priceClass = stockData.price > stockData.openPrice ? 'price-up' : 'price-down';
     
                     quoteElement.innerHTML = `
                         <div class="quote-symbol">${stockData.symbol}</div>
