@@ -19,7 +19,9 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center py-3">
         <div id="sidebar" class="sidebar">
-            <img src="./img/logo.jpg" alt="Logo" class="logo">
+           <a class="nav-link" href="#" data-target="principal-content">
+             <img src="./img/logo.jpg" alt="Logo" class="logo">
+            </a>
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-target="charts">
@@ -38,7 +40,7 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#" data-target="quote_grid">
-                        <i class="fas fa-table"></i> Grade de cotações 
+                        <i class="fas fa-chart-line"></i></i> Grade de cotações 
                     </a>
                 </li>
                 <li class="nav-item">
@@ -56,14 +58,38 @@
                         <i class="fas fa-building"></i> FIIs
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html" data-target="exit">
+                        <i class="fas fa-door-open"></i> Sair
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
-    
+
+<!-----------------------------------------TELA INICIAL-------------------------------------------------->    
+    <div id="principal-content" class="content-card active">
+        <div id="home" class="home-container">
+            <div class="welcome-section">
+                <div class="header__principal">
+                    <div class="header__home">
+                        <h1>Olá ${Username}</h1>
+                        <h3> <br> Bem-vindo ao Seu Homebroker </h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 <!--------------------------------------EXIBIÇÃO DE GRÁFICOS--------------------------------------------->
     <div id="main-content" class="main-content">
             <div id="charts" class="content-card">
                 <div class="container mt-4">
+                    <div class="header__principal">
+                    <h3>Gráficos</h3>
+                    </div>
+                    <h3> <br> <br> </h3>
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="stock-select">Escolha uma ação:</label>
@@ -97,7 +123,10 @@
 <!-------------------------------------------COMPRAS E VENDAS----------------------------------------------> 
         <div id="trading" class="content-card">
             <div class="container mt-5">
+                <div class="header__principal">
                 <h3>Compra e Venda</h3>
+                </div>
+                <h3> <br> <br> </h3>
                 <div id="portfolio-container">
                     <table class="table table-dark table-striped table-portfolio">
                         <thead>
@@ -155,7 +184,10 @@
         <div id="history" class="content-card">
             <div class="container">
                 <div id="transaction-history-container" style="display: none;">
-                    <h3>Histórico de Transações</h3>
+                    <div class="header__principal">
+                        <h3>Histórico de Transações</h3>
+                        </div>
+                        <h3> <br> <br> </h3>
                         <div id="no-transactions-message" style="display: none;">
                             <p>Você ainda não fez nenhuma transação.</p>
                         </div>
@@ -180,14 +212,20 @@
 
 <!------------------------------------------GRADE DE COTAÇÕES-------------------------------------------->
         <div id="quote_grid" class="content-card">
-            <h3>Cotações em Tempo Real</h3>
+            <div class="header__principal">
+                <h3>Cotações em Tempo Real</h3>
+                </div>
+                <h3> <br> </h3>
             <div id="quotes-container"></div>
         </div>
 
 
 <!----------------------------------------------MOEDAS--------------------------------------------------->
             <div id="coins" class="content-card">
-                    <h2>Cotações de Moedas</h2>
+                <div class="header__principal">
+                    <h3>Moedas</h3>
+                    </div>
+                    <h3> <br> </h3>
                     <div id="coins-list"></div>
             </div>
         
@@ -195,16 +233,22 @@
 <!-------------------------------------------TAXAS E ÍNDICES--------------------------------------------->
             <div id="finance" class="content-card">
                 <div id="indices-container">
-                    <h2>Índices</h2>
+                    <div class="header__principal">
+                        <h3>Índices</h3>
+                        </div>
+                        <h3> <br> </h3>
                     <div id="indices-list"></div>
-                    <div id="taxas-list"></div>
+                    <div id="taxas-list" class="header__principal"></div>
                 </div>
             </div>
 
 <!-----------------------------------------------FIIs---------------------------------------------------->
             <div id="FIIs" class="content-card">
                 <h1>EM BREVEEEEEEEE!!!!</h1>
-                <h3>FIIs</h3>
+                <div class="header__principal">
+                    <h3>FIIs</h3>
+                    </div>
+                    <h3> <br> </h3>
             </div>
 
     </div> 

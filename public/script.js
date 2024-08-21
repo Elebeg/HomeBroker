@@ -129,10 +129,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Armazenar a instância do gráfico no elemento para facilitar atualizações
         chartElement.chartInstance = chartInstance;
 
-        // Atualizar o gráfico a cada 10 segundos
+        // Atualizar o gráfico a cada 60 segundos
         setInterval(async () => {
             await updateStock(symbol, true);
-        }, 10000);  // 10 segundos
+        }, 60000);  // 60 segundos
     };
 
     // Função para atualizar o gráfico com novos dados
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
                 // Remove dados antigos para evitar excesso de pontos no gráfico
-                if (chartInstance.data.datasets[0].data.length > 100) {
+                if (chartInstance.data.datasets[0].data.length > 60) {
                     chartInstance.data.datasets[0].data.shift();
                 }
 
