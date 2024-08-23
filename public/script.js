@@ -51,6 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         stockElement.innerHTML = `
             <button class="delete-btn">X</button>
+            <img src="./img/${stockData.symbol}.png">
             <h2>${stockData.name} (${stockData.symbol})</h2>
             <p class="stock-price">${stockData.price.toFixed(2)}</p>
             <p>Última atualização: ${new Date(stockData.updated_at).toLocaleString()}</p>
@@ -489,6 +490,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     quoteElement.classList.add('quote');
     
                     quoteElement.innerHTML = `
+                        <img src="./img/${stockData.symbol}.png">
                         <div class="quote-symbol">${stockData.symbol}</div>
                         <div class="quote-price">${stockData.price.toFixed(2)}</div>
                     `;
@@ -650,6 +652,17 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             };
+
+
+//------------------------------------------------EXIT-------------------------------------------------\\
+        document.getElementById("exit-button").addEventListener("click", function(event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+                if (confirm("Deseja realmente sair?")) {
+                window.location.href = "index.html";
+                } else {
+                window.location.href = "homebroker.html"
+                }
+            });
 
 //------------------------------------------------CALLBACK---------------------------------------------\\
     const updateRateData = async () => {   

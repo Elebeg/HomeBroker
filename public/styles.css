@@ -401,6 +401,7 @@ h2{
     gap: 15px;
     box-sizing: border-box; /* Garante que padding e borda sejam incluídos na largura */
     overflow: hidden; /* Evita que os elementos ultrapassem os limites do contêiner */
+    z-index: 1000;
 }
 
 .input__container:hover {
@@ -597,8 +598,53 @@ section {
     font-family: 'Roboto', arial, sans-serif;
     font-size: 30px;
 }
-  
 
+footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
+#stocks-container img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+#quotes-container img {
+    width: 40px;
+    height: auto;
+    margin-right: 10px;
+}
+
+select.custom-select {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 16px;
+    width: 100%;
+    -webkit-appearance: none; /* Remove estilo padrão em alguns navegadores */
+    -moz-appearance: none; /* Remove estilo padrão em alguns navegadores */
+    appearance: none; /* Remove estilo padrão */
+}
+
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-select-wrapper::after {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Permite clicar na seta */
+}
+  
 @media (max-width: 768px) {
     .stock {
         max-width: 100%;

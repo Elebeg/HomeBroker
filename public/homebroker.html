@@ -59,7 +59,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html" data-target="exit">
+                    <a class="nav-link" href="#" id="exit-button">
                         <i class="fas fa-door-open"></i> Sair
                     </a>
                 </li>
@@ -93,20 +93,43 @@
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <label for="stock-select">Escolha uma ação:</label>
+                            <div class="custom-select-wrapper">
                             <select id="stock-select" class="form-control">
-                                <option value="PETR4">Petrobras PN (PETR4)</option>
-                                <option value="VALE3">Vale ON (VALE3)</option>
-                                <option value="ITUB4">Itaú Unibanco PN (ITUB4)</option>
-                                <option value="B3SA3">B3 ON (B3SA3)</option>
-                                <option value="BBAS3">Banco do Brasil ON (BBAS3)</option>
-                                <option value="ABEV3">Ambev ON (ABEV3)</option>
-                                <option value="MGLU3">Magazine Luiza ON (MGLU3)</option>
-                                <option value="WEGE3">WEG ON (WEGE3)</option>
-                                <option value="RENT3">Localiza ON (RENT3)</option>
-                                <option value="ITSA4">Itaúsa PN (ITSA4)</option>
-                                <!-- Adicionar mais ações aqui depois -->
+                                <option value="PETR4" > Petrobras PN (PETR4)</option>
+                                <option value="VALE3" > Vale ON (VALE3)</option>
+                                <option value="ITUB4" > Itaú Unibanco PN (ITUB4)</option>
+                                <option value="B3SA3" > B3 ON (B3SA3)</option>
+                                <option value="BBAS3" > Banco do Brasil ON (BBAS3)</option>
+                                <option value="ABEV3" > Ambev ON (ABEV3)</option>
+                                <option value="MGLU3" > Magazine Luiza ON (MGLU3)</option>
+                                <option value="WEGE3" > WEG ON (WEGE3)</option>
+                                <option value="RENT3" > Localiza ON (RENT3)</option>
+                                <option value="ITSA4" > Itaúsa PN (ITSA4)</option>
+                                <option value="AMER3" > Americanas S.A. (AMER3)</option>
+                                <option value="AZUL4" > Azul S.A. (AZUL4)</option>
+                                <option value="BBDC4" > Bco Bradesco S.A. (BBDC4)</option>
+                                <option value="CRFB3" > Atacadão S.A. (CRFB3)</option>
+                                <option value="ELET3" > Centrais Elet Bras S.A. Eletrobras (ELET3)</option>
+                                <option value="CIEL3" > Cielo S.A. (CIEL3)</option>
+                                <option value="COGN3" > Cogna Educação (COGN3)</option>
+                                <option value="SBSP3" > Cia Saneamento Basico Est Sao Paulo (SBSP3)</option>
+                                <option value="CMIG3" > Cia Energetica De Minas Gerais Cemig (CMIG3)</option>
+                                <option value="CSNA3" > Cia Siderurgica Nacional (CSNA3)</option>
+                                <option value="CVCB3" > Cvc Brasil Operadora E Agência De Viagens S.A. (CVCB3)</option>
+                                <option value="CYRE3" > Cyrela Brazil Realty S.A.Empreend E Part (CYRE3)</option>
+                                <option value="GFSA3" > GafiSA S.A. (GFSA3)</option>
+                                <option value="GGBR3" > Gerdau S.A. (GGBR3)</option>
+                                <option value="GOLL4" > Gol Linhas Aereas Inteligentes S.A. (GOLL4)</option>
+                                <option value="IRBR3" > Irb Brasil Resseguros S.A. (IRBR3)</option>
+                                <option value="JBSS3" > Jbs S.A. (JBSS3)</option>
+                                <option value="BEEF3" > Minerva S.A. (BEEF3)</option>
+                                <option value="OIBR3" > Oi S.A. (OIBR3)</option>
+                                <option value="PRIO3" > Petro Rio S.A. (PRIO3)</option>
+                                <option value="TASA3" > Taurus Armas S.A. (TASA3)</option>
+                                <option value="USIM3" > Usinas Sid De Minas Gerais S.A. Usiminas (USIM3)</option>
                             </select>
                             <input type="hidden">
+                            </div>
                         </div>
                         <div class="col-md-6 d-flex align-items-center">
                             <button id="add-stock-btn" class="btn btn-primary btn-add-stock">Adicionar Ação</button>
@@ -148,17 +171,38 @@
                     <div class="col-md-6">
                         <label for="portfolio-stock-select">Escolha uma ação para comprar/vender:</label>
                         <select id="portfolio-stock-select" class="form-control">
-                            <option value="PETR4">Petrobras PN (PETR4)</option>
-                            <option value="VALE3">Vale ON (VALE3)</option>
-                            <option value="ITUB4">Itaú Unibanco PN (ITUB4)</option>
-                            <option value="B3SA3">B3 ON (B3SA3)</option>
-                            <option value="BBAS3">Banco do Brasil ON (BBAS3)</option>
-                            <option value="ABEV3">Ambev ON (ABEV3)</option>
-                            <option value="MGLU3">Magazine Luiza ON (MGLU3)</option>
-                            <option value="WEGE3">WEG ON (WEGE3)</option>
-                            <option value="RENT3">Localiza ON (RENT3)</option>
-                            <option value="ITSA4">Itaúsa PN (ITSA4)</option>
-                            <!-- Adicionar mais ações aqui depois-->
+                            <option value="PETR4" > Petrobras PN (PETR4)</option>
+                            <option value="VALE3" > Vale ON (VALE3)</option>
+                            <option value="ITUB4" > Itaú Unibanco PN (ITUB4)</option>
+                            <option value="B3SA3" > B3 ON (B3SA3)</option>
+                            <option value="BBAS3" > Banco do Brasil ON (BBAS3)</option>
+                            <option value="ABEV3" > Ambev ON (ABEV3)</option>
+                            <option value="MGLU3" > Magazine Luiza ON (MGLU3)</option>
+                            <option value="WEGE3" > WEG ON (WEGE3)</option>
+                            <option value="RENT3" > Localiza ON (RENT3)</option>
+                            <option value="ITSA4" > Itaúsa PN (ITSA4)</option>
+                            <option value="AMER3" > Americanas S.A. (AMER3)</option>
+                            <option value="AZUL4" > Azul S.A. (AZUL4)</option>
+                            <option value="BBDC4" > Bco Bradesco S.A. (BBDC4)</option>
+                            <option value="CRFB3" > Atacadão S.A. (CRFB3)</option>
+                            <option value="ELET3" > Centrais Elet Bras S.A. Eletrobras (ELET3)</option>
+                            <option value="CIEL3" > Cielo S.A. (CIEL3)</option>
+                            <option value="COGN3" > Cogna Educação (COGN3)</option>
+                            <option value="SBSP3" > Cia Saneamento Basico Est Sao Paulo (SBSP3)</option>
+                            <option value="CMIG3" > Cia Energetica De Minas Gerais Cemig (CMIG3)</option>
+                            <option value="CSNA3" > Cia Siderurgica Nacional (CSNA3)</option>
+                            <option value="CVCB3" > Cvc Brasil Operadora E Agência De Viagens S.A. (CVCB3)</option>
+                            <option value="CYRE3" > Cyrela Brazil Realty S.A.Empreend E Part (CYRE3)</option>
+                            <option value="GFSA3" > GafiSA S.A. (GFSA3)</option>
+                            <option value="GGBR3" > Gerdau S.A. (GGBR3)</option>
+                            <option value="GOLL4" > Gol Linhas Aereas Inteligentes S.A. (GOLL4)</option>
+                            <option value="IRBR3" > Irb Brasil Resseguros S.A. (IRBR3)</option>
+                            <option value="JBSS3" > Jbs S.A. (JBSS3)</option>
+                            <option value="BEEF3" > Minerva S.A. (BEEF3)</option>
+                            <option value="OIBR3" > Oi S.A. (OIBR3)</option>
+                            <option value="PRIO3" > Petro Rio S.A. (PRIO3)</option>
+                            <option value="TASA3" > Taurus Armas S.A. (TASA3)</option>
+                            <option value="USIM3" > Usinas Sid De Minas Gerais S.A. Usiminas (USIM3)</option>
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -242,6 +286,7 @@
                 </div>
             </div>
 
+
 <!-----------------------------------------------FIIs---------------------------------------------------->
             <div id="FIIs" class="content-card">
                 <h1>EM BREVEEEEEEEE!!!!</h1>
@@ -250,9 +295,9 @@
                     </div>
                     <h3> <br> </h3>
             </div>
-
     </div> 
 </div>    
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
